@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const dd = await window.dronedeploy.ready();
 
   // URL do seu KML hospedado (pode estar no GitHub também)
-  const KML_URL = "https://alelauxenctmgeo.github.io/seu-arquivo.kml";
+  const KML_URL = "https://alelauxenctmgeo.github.io/360canelinha.kml";
 
   const text = await fetch(KML_URL).then(r => r.text());
   const parser = new DOMParser();
