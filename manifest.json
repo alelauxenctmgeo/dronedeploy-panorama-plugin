@@ -1,0 +1,13 @@
+{
+   "name": "Importador de Pontos Panoramas",
+   "version": "1.0.0",
+   "description": "Importa pontos 360 de um arquivo KML diretamente no DroneDeploy",
+   "author": "Seu Nome",
+   "permissions": "geometry",
+   "ui": {
+      "panel": {
+         "url": "index.html",
+         "width": 350
+      }
+   }
+}
