@@ -2,20 +2,43 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Importar Pontos 360</title>
+  <title>DroneDeploy Plugin - Import KML Points</title>
 </head>
-<body style="font-family: sans-serif; padding: 20px;">
+<body>
+<script src="https://js.dronedeploy.com/releases/2.0.0-beta.7/dronedeploy.min.js"></script>
 
-  <h2>Importar Pontos 360</h2>
-  <p>Selecione um arquivo KML com pontos pré-criados:</p>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const dd = await window.dronedeploy.ready();
 
-  <input type="file" id="fileInput" accept=".kml"><br><br>
+  // URL do seu KML hospedado (pode estar no GitHub também)
+  const KML_URL = "https://alelauxenctmgeo.github.io/seu-arquivo.kml";
 
-  <button id="btnImport" style="padding: 10px 15px; cursor:pointer;">
-    Importar pontos no DroneDeploy
-  </button>
+  const text = await fetch(KML_URL).then(r => r.text());
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(text, "text/xml");
 
-  <script src="app.js"></script>
+  const coords = [...xml.querySelectorAll("Point coordinates")].map(n => {
+    const [lng, lat] = n.textContent.trim().split(",");
+    return { lat: Number(lat), lng: Number(lng) };
+  });
 
+  for (let c of coords) {
+    await dd.Maps.addWaypoint({
+      lat: c.lat,
+      lng: c.lng,
+      altitude: 80, // altitude fixa para panoramas
+      actions: [{
+        type: "PANO",
+        heading: 0,
+        pitch: -90,
+        radius: 10
+      }]
+    });
+  }
+
+  alert("Pontos importados com sucesso!");
+});
+</script>
 </body>
 </html>
